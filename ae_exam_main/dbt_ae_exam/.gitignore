@@ -1,0 +1,15 @@
+# dbt runtime folders
+target/
+dbt_packages/
+logs/
+
+# Local database file
+ae_exam_db.duckdb
+
+# User config (เฉพาะ local)
+.user.yml
+
+# IDE/OS specific
+.DS_Store
+*.bak
+*.tmp
