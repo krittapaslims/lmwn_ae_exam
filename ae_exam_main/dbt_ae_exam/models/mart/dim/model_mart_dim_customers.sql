@@ -1,4 +1,4 @@
-{{ config(materialized='view') }}
+{{ config(materialized='table') }}
 
 SELECT
     customer_id, 
@@ -9,4 +9,4 @@ SELECT
     birth_year, 
     gender, 
     preferred_device
-FROM {{ source("main", "customers_master") }}
+FROM {{ ref('model_stg_customers_master') }}

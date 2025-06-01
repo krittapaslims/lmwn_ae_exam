@@ -1,4 +1,4 @@
-{{ config(materialized='view') }}
+{{ config(materialized='table') }}
 
 SELECT
     driver_id, 
@@ -8,4 +8,4 @@ SELECT
     active_status, 
     driver_rating, 
     bonus_tier
-FROM {{ source("main", "drivers_master") }}
+FROM {{ ref('model_stg_drivers_master') }}

@@ -37,3 +37,17 @@ models:
         tests:
           - not_null
           - unique
+  - name: model_int_campaign_stats
+    description: "Summary of campaign interaction statistics and cost"
+    columns:
+      - name: campaign_id
+        tests:
+          - not_null
+          - unique
+      - name: impressions
+        tests:
+          - not_null
+      - name: clicks
+      - name: conversions
+      - name: total_cost
+      - name: total_revenue

@@ -1,15 +1,15 @@
-{{ config(materialized='view') }}
+{{ config(materialized='table') }}
 
-SELECT
+SELECT 
     campaign_id,
     campaign_name,
-    start_date,
-    end_date,
     campaign_type,
     objective,
     channel,
-    budget,
     cost_model,
     targeting_strategy,
+    start_date,
+    end_date,
+    budget,
     is_active
-FROM {{ source("main", "campaign_master") }}
+FROM {{ ref('model_stg_campaign_master') }}
