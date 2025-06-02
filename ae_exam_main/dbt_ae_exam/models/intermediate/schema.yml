@@ -1,0 +1,667 @@
+version: 2
+
+models:
+  - name: model_int_campaign_interaction_summary
+    description: >
+      Intermediate model summarizing campaign interactions. It counts impressions,
+      clicks, and conversions, as well as calculates total ad cost and revenue by campaign.
+    columns:
+      - name: campaign_id
+        description: Unique identifier for the campaign
+        tests:
+          - not_null
+
+      - name: impressions
+        description: Number of distinct impression events for the campaign
+        tests: []
+
+      - name: clicks
+        description: Number of distinct click events for the campaign
+        tests: []
+
+      - name: conversions
+        description: Number of distinct conversion events for the campaign
+        tests: []
+
+      - name: total_ad_cost
+        description: Total advertising cost across all events (impression, click, conversion)
+        tests: []
+
+      - name: total_revenue
+        description: Total revenue generated from conversion events
+        tests: []
+
+  - name: model_int_complaint_summary
+    description: >
+      Intermediate model summarizing support ticket resolutions, including number of tickets,
+      unresolved cases, resolution duration, compensation, and time range of complaints.
+    columns:
+      - name: issue_type
+        description: Broad category of the issue reported (e.g., delivery, payment)
+        tests: []
+
+      - name: issue_sub_type
+        description: Specific type of the issue (e.g., late delivery, wrong item)
+        tests: []
+
+      - name: total_tickets
+        description: Total number of tickets for each issue sub-type
+        tests: []
+
+      - name: unresolved_or_escalated
+        description: Number of tickets that are unresolved or escalated
+        tests: []
+
+      - name: avg_resolution_time_min
+        description: Average time (in minutes) taken to resolve issues
+        tests: []
+
+      - name: total_compensation_issued
+        description: Total amount of compensation issued for the tickets
+        tests: []
+
+      - name: first_ticket_datetime
+        description: Earliest ticket opened for this issue sub-type
+        tests: []
+
+      - name: latest_ticket_datetime
+        description: Most recent ticket opened for this issue sub-type
+        tests: []
+
+  - name: model_int_customer_acquisition_behavior
+    description: >
+      Intermediate model that captures the behavior of newly acquired customers after
+      converting via a marketing campaign. Includes order patterns, spend, and retention.
+    columns:
+      - name: campaign_id
+        description: Campaign responsible for acquiring the new customer
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: Unique identifier of the acquired customer
+        tests:
+          - not_null
+
+      - name: first_order_datetime
+        description: Timestamp of the customer's first order
+        tests: []
+
+      - name: last_order_datetime
+        description: Timestamp of the customer's most recent order
+        tests: []
+
+      - name: total_orders
+        description: Number of orders placed by the customer
+        tests: []
+
+      - name: total_spent
+        description: Total amount spent by the customer
+        tests: []
+
+      - name: avg_order_value
+        description: Average order value across all orders
+        tests: []
+
+      - name: days_to_first_order
+        description: Days between ad conversion and first order
+        tests: []
+
+      - name: days_active
+        description: Number of days between first and last order
+        tests: []
+
+      - name: ad_cost
+        description: Cost of ad spent to acquire the customer
+        tests: []
+
+  - name: model_int_customer_first_orders
+    description: >
+      Intermediate model that records the first order datetime for each customer
+      based on the order transactions table.
+    columns:
+      - name: customer_id
+        description: Unique identifier of the customer
+        tests:
+          - not_null
+          - unique
+
+      - name: first_order_datetime
+        description: Timestamp of the customer's first order
+        tests:
+          - not_null
+
+  - name: model_int_driver_avg_rating_summary
+    description: >
+      Intermediate model that summarizes driver ratings before and after a complaint,
+      using pivoted data from driver rating change analysis.
+    columns:
+      - name: driver_id
+        description: Unique identifier for the delivery driver
+        tests:
+          - not_null
+          - unique
+
+      - name: avg_rating_before_complaint
+        description: Average customer rating for the driver before a complaint
+        tests: []
+
+      - name: avg_rating_after_complaint
+        description: Average customer rating for the driver after a complaint
+        tests: []
+
+  - name: model_int_driver_complaint_summary
+    description: >
+      Intermediate model that analyzes complaints involving drivers,
+      including complaint type, resolution time, CSAT score, and driver rating after complaint.
+    columns:
+      - name: driver_id
+        description: Unique identifier for the driver
+        tests:
+          - not_null
+
+      - name: ticket_id
+        description: Unique identifier for the support ticket
+        tests: []
+
+      - name: issue_type
+        description: General category of the issue
+        tests: []
+
+      - name: issue_sub_type
+        description: Specific category of the issue
+        tests: []
+
+      - name: opened_datetime
+        description: Timestamp when the complaint was opened
+        tests: []
+
+      - name: resolved_datetime
+        description: Timestamp when the complaint was resolved
+        tests: []
+
+      - name: csat_score
+        description: Customer Satisfaction Score for the ticket
+        tests: []
+
+      - name: resolution_time_min
+        description: Time in minutes taken to resolve the complaint
+        tests: []
+
+      - name: is_unresolved_or_escalated
+        description: Binary indicator if the ticket was not resolved
+        tests: []
+
+      - name: driver_rating_after_complaint
+        description: Driver rating after the complaint was handled
+        tests: []
+
+  - name: model_int_driver_delivery_events
+    description: >
+      Intermediate model that aggregates delivery task metrics per driver,
+      including assignment count, completion count, average accept delay, delivery time, and late delivery count.
+    columns:
+      - name: driver_id
+        description: Unique identifier for each driver
+        tests:
+          - not_null
+
+      - name: tasks_assigned
+        description: Total number of delivery tasks assigned to the driver
+        tests: []
+
+      - name: tasks_completed
+        description: Total number of delivery tasks completed by the driver
+        tests: []
+
+      - name: avg_accept_delay_min
+        description: Average time (in minutes) from task assignment to acceptance
+        tests: []
+
+      - name: avg_delivery_time_min
+        description: Average time (in minutes) from acceptance to delivery
+        tests: []
+
+      - name: late_deliveries
+        description: Count of deliveries taking longer than 45 minutes
+        tests: []
+
+  - name: model_int_driver_feedback_summary
+    description: >
+      Aggregated feedback summary for drivers based on CSAT scores from support tickets.
+      Categorizes feedback as positive, negative, or neutral.
+    columns:
+      - name: driver_id
+        description: Unique identifier of the driver
+        tests:
+          - not_null
+
+      - name: total_feedback
+        description: Total number of feedback records received by the driver
+        tests: []
+
+      - name: positive_feedback
+        description: Number of positive feedback (CSAT >= 4)
+        tests: []
+
+      - name: negative_feedback
+        description: Number of negative feedback (CSAT <= 2)
+        tests: []
+
+  - name: model_int_driver_incentive_participation
+    description: >
+      This model transforms driver incentive logs to include standardized incentive periods
+      with explicit start and end timestamps for analysis.
+    columns:
+      - name: driver_id
+        description: Unique identifier for the driver
+        tests:
+          - not_null
+
+      - name: incentive_program
+        description: Name of the incentive program the driver participated in
+        tests:
+          - not_null
+
+      - name: incentive_start_datetime
+        description: Start datetime of the incentive program participation period
+        tests:
+          - not_null
+
+      - name: incentive_end_datetime
+        description: End datetime of the incentive program participation period
+        tests:
+          - not_null
+
+      - name: bonus_amount
+        description: Amount of bonus assigned to the driver under the program
+        tests: []
+
+      - name: bonus_qualified
+        description: Indicates whether the driver qualified for the bonus (boolean)
+        tests: []
+
+      - name: delivery_target
+        description: Number of deliveries required to qualify for the incentive
+        tests: []
+
+      - name: actual_deliveries
+        description: Number of deliveries completed by the driver during the incentive period
+        tests: []
+
+  - name: model_int_driver_order_events_with_time
+    description: >
+      This model pivots the order status logs to generate driver-level timestamps 
+      for key delivery milestones (assigned, accepted, completed, cancelled), 
+      along with duration metrics.
+    columns:
+      - name: order_id
+        description: Unique identifier for each order
+        tests:
+          - not_null
+
+      - name: driver_id
+        description: Identifier of the driver who handled the order
+        tests:
+          - not_null
+
+      - name: assigned_time
+        description: Timestamp when the order was assigned to the driver
+        tests: []
+
+      - name: accepted_time
+        description: Timestamp when the order was accepted by the driver
+        tests: []
+
+      - name: delivered_time
+        description: Timestamp when the order was completed/delivered
+        tests: []
+
+      - name: cancelled_time
+        description: Timestamp when the order was cancelled (if applicable)
+        tests: []
+
+      - name: accept_delay_min
+        description: Time in minutes between order assignment and driver acceptance
+        tests: []
+
+      - name: delivery_time_min
+        description: Time in minutes between order acceptance and delivery
+        tests: []
+
+  - name: model_int_driver_performance_during_incentive
+    description: >
+      Contains delivery performance metrics of drivers during incentive periods, 
+      such as acceptance delay and delivery time for each order.
+    columns:
+      - name: driver_id
+        description: Identifier of the driver participating in the incentive
+        tests:
+          - not_null
+
+      - name: incentive_program
+        description: Name of the incentive program
+        tests:
+          - not_null
+
+      - name: order_id
+        description: Unique identifier for each order delivered under incentive
+        tests:
+          - not_null
+
+      - name: accept_delay_min
+        description: Time in minutes between order assignment and acceptance
+        tests: []
+
+      - name: delivery_time_min
+        description: Time in minutes between acceptance and delivery
+        tests: []
+
+  - name: model_int_driver_rating_change_analysis
+    description: >
+      Analyzes the average driver rating before and after receiving complaints
+      based on a 180-day window relative to the complaint date.
+    columns:
+      - name: driver_id
+        description: Unique identifier for the driver
+        tests:
+          - not_null
+
+      - name: rating_period
+        description: >
+          Period classification based on complaint time; 
+          either 'before' (more than 180 days before today) or 'after'
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['before', 'after']
+
+      - name: avg_rating
+        description: Average rating of the driver during the specified rating period
+        tests:
+          - not_null
+
+  - name: model_int_driver_rating_logs
+    description: >
+      Intermediate model that captures the driver's rating at the time of each complaint event.
+      Derived by joining driver complaint events with the latest rating data from driver master.
+    columns:
+      - name: driver_id
+        description: Unique identifier of the driver
+        tests:
+          - not_null
+
+      - name: complaint_datetime
+        description: Timestamp when the complaint was initiated
+        tests:
+          - not_null
+
+      - name: rating_at_complaint_time
+        description: The driver rating at the time of the complaint, as recorded in the driver master table
+        tests:
+          - not_null
+
+  - name: model_int_order_delivery_events
+    description: >
+      Intermediate model that pivots order status logs by driver and order, providing
+      timestamps for created, accepted, completed, canceled, and failed states
+      along with the associated driver region.
+    columns:
+      - name: order_id
+        description: Unique identifier for each order
+        tests:
+          - not_null
+          - unique
+
+      - name: driver_id
+        description: Identifier of the driver associated with the order
+        tests:
+          - not_null
+
+      - name: driver_region
+        description: Region in which the driver operates
+        tests:
+          - not_null
+
+      - name: assigned_time
+        description: Timestamp when the order was created and assigned
+        tests: []
+
+      - name: accepted_time
+        description: Timestamp when the order was accepted by the driver
+        tests: []
+
+      - name: delivered_time
+        description: Timestamp when the order was completed
+        tests: []
+
+      - name: canceled_time
+        description: Timestamp when the order was canceled
+        tests: []
+
+      - name: failed_time
+        description: Timestamp when the order failed
+        tests: []
+
+  - name: model_int_restaurant_complaint_summary
+    description: >
+      Intermediate model filtering only food-related support tickets tied to restaurants,
+      and computing resolution time for complaint analysis.
+    columns:
+      - name: restaurant_id
+        description: Unique identifier for the restaurant receiving the complaint
+        tests:
+          - not_null
+
+      - name: issue_type
+        description: Type of the issue (should be 'food')
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['food']
+
+      - name: issue_sub_type
+        description: More specific classification of the food-related issue
+        tests: []
+
+      - name: ticket_id
+        description: Unique support ticket ID related to the complaint
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: Identifier of the customer who filed the complaint
+        tests: []
+
+      - name: opened_datetime
+        description: Timestamp when the ticket was created
+        tests:
+          - not_null
+
+      - name: resolved_datetime
+        description: Timestamp when the ticket was resolved
+        tests: []
+
+      - name: compensation_amount
+        description: Value of compensation issued for the complaint (if any)
+        tests: []
+
+      - name: resolution_time_min
+        description: Duration in minutes to resolve the ticket
+        tests: []
+
+  - name: model_int_restaurant_order_summary
+    description: >
+      Intermediate model that summarizes total orders and last order date 
+      per customer-restaurant pair, used for analyzing repeat purchase behavior.
+    columns:
+      - name: customer_id
+        description: Unique identifier of the customer
+        tests:
+          - not_null
+
+      - name: restaurant_id
+        description: Unique identifier of the restaurant
+        tests:
+          - not_null
+
+      - name: total_orders
+        description: Total number of orders made by the customer at the restaurant
+        tests: []
+
+      - name: last_order_date
+        description: Most recent order date for the customer at that restaurant
+        tests: []
+
+  - name: model_int_retargeted_customers
+    description: >
+      Intermediate model identifying retargeted customers and their return behavior.
+      Combines campaign interaction with order history to compute days between orders,
+      number of orders after retargeting, and spend behavior.
+    columns:
+      - name: customer_id
+        description: Unique identifier for the customer
+        tests:
+          - not_null
+
+      - name: campaign_id
+        description: Retargeting campaign identifier associated with the interaction
+        tests:
+          - not_null
+
+      - name: first_order_date
+        description: Date of the customer's first order on the platform
+        tests: []
+
+      - name: retarget_interaction_date
+        description: Date when the customer was retargeted by the campaign
+        tests:
+          - not_null
+
+      - name: return_order_date
+        description: Date of the customer's first order after the retargeting interaction
+        tests: []
+
+      - name: days_between_orders
+        description: Number of days between the first order and the return order
+        tests: []
+
+      - name: num_orders_after
+        description: Number of orders placed after the retargeting event
+        tests: []
+
+      - name: total_spend_after
+        description: Total spend by the customer after the retargeting event
+        tests: []
+
+  - name: model_int_ticket_resolution_summary
+    description: >
+      Intermediate model combining ticket status logs and enrichment rules to flag
+      unresolved or escalated tickets, compute resolution duration, and track compensation.
+    columns:
+      - name: ticket_id
+        description: Unique identifier for each customer support ticket
+        tests:
+          - not_null
+          - unique
+
+      - name: issue_type
+        description: Broad classification of the issue (e.g., delivery, food, app)
+        tests:
+          - not_null
+
+      - name: issue_sub_type
+        description: Specific subtype of the issue (e.g., cold food, driver rude)
+        tests: []
+
+      - name: opened_datetime
+        description: Timestamp when the ticket was created
+        tests:
+          - not_null
+
+      - name: resolved_datetime
+        description: Timestamp when the ticket was resolved (nullable if unresolved)
+        tests: []
+
+      - name: compensation_amount
+        description: Amount of monetary compensation provided to the customer
+        tests: []
+
+      - name: latest_status
+        description: Most recent known status of the ticket
+        tests: []
+
+      - name: resolution_time_min
+        description: Number of minutes between opened and resolved time
+        tests: []
+
+      - name: is_unresolved_or_escalated
+        description: Flag indicating if the ticket is unresolved or has been escalated
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+
+  - name: model_int_ticket_status_latest
+    description: >
+      Intermediate model to extract the latest status and timestamp of each support ticket
+      using window functions over the status log table.
+    columns:
+      - name: ticket_id
+        description: Unique identifier for the support ticket
+        tests:
+          - not_null
+          - unique
+
+      - name: latest_status
+        description: Most recent status of the support ticket (e.g., resolved, pending)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['open', 'pending', 'escalated', 'resolved', 'closed']
+
+      - name: latest_status_datetime
+        description: Timestamp of when the latest status was recorded
+        tests:
+          - not_null
+
+  - name: model_int_tickets_never_resolved
+    description: >
+      Intermediate model that identifies all support tickets that have never reached a 'resolved' status.
+    columns:
+      - name: ticket_id
+        description: Unique identifier for the support ticket that has never been resolved
+        tests:
+          - not_null
+          - unique
+
+  - name: model_int_zone_delivery_summary
+    description: >
+      Intermediate model summarizing delivery performance by driver region,
+      including total orders, completion rate, average delivery time, and supply-demand ratio.
+    columns:
+      - name: region
+        description: Driver region (delivery zone)
+        tests:
+          - not_null
+
+      - name: total_orders
+        description: Total number of orders in this region
+
+      - name: completed_orders
+        description: Number of orders completed successfully
+
+      - name: cancelled_or_failed_orders
+        description: Number of orders that were either cancelled or failed
+
+      - name: completion_rate
+        description: Completed orders divided by total orders
+
+      - name: avg_delivery_time_min
+        description: Average time (in minutes) from accepted to delivered for completed orders
+
+      - name: total_drivers
+        description: Number of active drivers in the region
+
+      - name: supply_demand_ratio
+        description: Number of drivers per order (driver supply vs order demand)

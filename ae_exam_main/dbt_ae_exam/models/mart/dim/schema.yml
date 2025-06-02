@@ -1,0 +1,165 @@
+version: 2
+
+models:
+  - name: model_mart_dim_campaign
+    description: >
+      Dimension table for campaign metadata. Provides descriptive attributes
+      for marketing campaigns such as name, type, targeting, and budget.
+    columns:
+      - name: campaign_id
+        description: Unique identifier for the campaign
+        tests:
+          - not_null
+          - unique
+
+      - name: campaign_name
+        description: Human-readable name of the campaign
+        tests: []
+
+      - name: campaign_type
+        description: Type of campaign (e.g., acquisition, retargeting)
+        tests: []
+
+      - name: objective
+        description: Business objective or goal of the campaign
+        tests: []
+
+      - name: channel
+        description: Channel through which the campaign was deployed (e.g., Facebook, Line)
+        tests: []
+
+      - name: cost_model
+        description: Billing model used (e.g., CPC, CPM, CPA)
+        tests: []
+
+      - name: targeting_strategy
+        description: Targeting logic used to select audience for the campaign
+        tests: []
+
+      - name: start_date
+        description: Campaign start date
+        tests: []
+
+      - name: end_date
+        description: Campaign end date
+        tests: []
+
+      - name: budget
+        description: Total budget allocated for the campaign
+        tests: []
+
+      - name: is_active
+        description: Indicates whether the campaign is still running (true/false)
+        tests:
+          - accepted_values:
+              values: [true, false]
+
+  - name: model_mart_dim_customer
+    description: >
+      Dimension table containing customer metadata and demographic information.
+      Includes signup behavior, segmentation, referral, and device preferences.
+    columns:
+      - name: customer_id
+        description: Unique identifier for each customer
+        tests:
+          - not_null
+          - unique
+
+      - name: signup_date
+        description: Date the customer first signed up on the platform
+        tests: []
+
+      - name: customer_segment
+        description: Segmentation label for the customer (e.g., high value, casual)
+        tests: []
+
+      - name: status
+        description: Current status of the customer account (e.g., active, churned)
+        tests: []
+
+      - name: referral_source
+        description: How the customer was acquired (e.g., referral, ads)
+        tests: []
+
+      - name: birth_year
+        description: Year of birth of the customer
+        tests: []
+
+      - name: gender
+        description: Gender of the customer (e.g., male, female, other)
+        tests: []
+
+      - name: preferred_device
+        description: Most commonly used device by the customer (e.g., mobile, desktop)
+        tests: []
+
+  - name: model_mart_dim_driver
+    description: >
+      Dimension table containing metadata for delivery drivers.
+      Includes registration details, operational region, vehicle type, and rating.
+    columns:
+      - name: driver_id
+        description: Unique identifier for the delivery driver
+        tests:
+          - not_null
+          - unique
+
+      - name: join_date
+        description: Date the driver joined the platform
+        tests: []
+
+      - name: vehicle_type
+        description: Type of vehicle used by the driver (e.g., motorcycle, car)
+        tests: []
+
+      - name: region
+        description: Service region or delivery zone of the driver
+        tests: []
+
+      - name: active_status
+        description: Status of the driver (e.g., active, inactive)
+        tests: []
+
+      - name: driver_rating
+        description: Average rating of the driver based on customer feedback
+        tests: []
+
+      - name: bonus_tier
+        description: Bonus tier classification used for incentive eligibility
+        tests: []
+
+  - name: model_mart_dim_restaurant
+    description: >
+      Dimension table containing information about restaurants.
+      Includes restaurant name, category, location, status, and average rating.
+    columns:
+      - name: restaurant_id
+        description: Unique identifier for the restaurant
+        tests:
+          - not_null
+          - unique
+
+      - name: name
+        description: Name of the restaurant
+        tests:
+          - not_null
+
+      - name: category
+        description: Type of cuisine or food category (e.g., Thai, Sushi)
+        tests: []
+
+      - name: city
+        description: City where the restaurant is located
+        tests: []
+
+      - name: average_rating
+        description: Average customer rating of the restaurant
+        tests: []
+
+      - name: active_status
+        description: Whether the restaurant is currently active on the platform
+        tests: []
+
+      - name: prep_time_min
+        description: Average preparation time in minutes
+        tests: []

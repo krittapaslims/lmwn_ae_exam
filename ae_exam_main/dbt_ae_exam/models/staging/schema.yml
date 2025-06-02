@@ -1,0 +1,523 @@
+version: 2
+
+models:
+  - name: model_stg_campaign_interactions
+    description: Staging model for `campaign interactions` data.
+    columns:
+      - name: interaction_id
+        description: Unique identifier for the interaction record
+        tests:
+          - not_null
+          - unique
+
+      - name: campaign_id
+        description: Identifier for the associated campaign
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: Unique identifier for the customer
+        tests:
+          - not_null
+
+      - name: interaction_datetime
+        description: Timestamp when the customer interacted with the campaign
+        tests:
+          - not_null
+
+      - name: event_type
+        description: Type of event (e.g., impression, click, conversion)
+        tests:
+          - not_null
+
+      - name: platform
+        description: Platform where the interaction occurred
+        tests:
+          - not_null
+
+      - name: device_type
+        description: Type of device used by the customer
+        tests:
+          - not_null
+
+      - name: ad_cost
+        description: Advertising cost incurred for the interaction
+        tests: []
+
+      - name: order_id
+        description: Unique identifier for the order
+        tests:
+          - not_null
+
+      - name: is_new_customer
+        description: Boolean flag indicating if this is a new customer
+        tests:
+          - accepted_values:
+              values: [true, false]
+
+      - name: revenue
+        description: Revenue generated from the transaction
+        tests: []
+
+      - name: session_id
+        description: Session identifier for customer app usage
+        tests:
+          - not_null
+
+  - name: model_stg_campaign_master
+    description: Staging model for `campaign master` data.
+    columns:
+      - name: campaign_id
+        description: Identifier for the associated campaign
+        tests:
+          - not_null
+          - unique
+
+      - name: campaign_name
+        description: Descriptive name of the campaign
+        tests: []
+
+      - name: start_date
+        description: Start date of the campaign
+        tests:
+          - not_null
+
+      - name: end_date
+        description: End date of the campaign
+        tests:
+          - not_null
+
+      - name: campaign_type
+        description: Type/category of the campaign (e.g., acquisition, retargeting)
+        tests:
+          - not_null
+
+      - name: objective
+        description: Business goal of the campaign (e.g., awareness, conversion)
+        tests: []
+
+      - name: channel
+        description: Marketing channel used (e.g., Facebook, Google)
+        tests:
+          - not_null
+
+      - name: budget
+        description: Total budget allocated to the campaign
+        tests: []
+
+      - name: cost_model
+        description: Cost model used (e.g., CPC, CPM, CPA)
+        tests: []
+
+      - name: targeting_strategy
+        description: Strategy used to target customers
+        tests: []
+
+      - name: is_active
+        description: Boolean flag indicating campaign activity status
+        tests:
+          - accepted_values:
+              values: [true, false]
+
+  - name: model_stg_customer_app_sessions
+    description: Staging model for `customer app sessions` data. Contains logs of customer activity within the app including session timing and device metadata.
+    columns:
+      - name: session_id
+        description: Session identifier for customer app usage
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Unique identifier for the customer
+        tests:
+          - not_null
+
+      - name: session_start
+        description: Timestamp when the session began
+        tests:
+          - not_null
+
+      - name: session_end
+        description: Timestamp when the session ended
+        tests:
+          - not_null
+
+      - name: device_type
+        description: Type of device used by the customer during the session
+        tests:
+          - not_null
+
+      - name: os_version
+        description: Operating system version of the device
+        tests: []
+
+      - name: app_version
+        description: Version of the application used during the session
+        tests: []
+
+      - name: location
+        description: Customer location during the session (may be derived from IP or GPS)
+        tests: []
+
+  - name: model_stg_customers_master
+    description: Staging model for `customers master` data. Contains profile information of registered customers including segment, gender, and signup date.
+    columns:
+      - name: customer_id
+        description: Unique identifier for the customer
+        tests:
+          - not_null
+          - unique
+
+      - name: signup_date
+        description: Date the customer signed up for the platform
+        tests:
+          - not_null
+
+      - name: customer_segment
+        description: Customer segmentation label used for analysis (e.g., high value, casual)
+        tests: []
+
+      - name: status
+        description: Current status of the customer account (e.g., active, inactive)
+        tests:
+          - not_null
+
+      - name: referral_source
+        description: Source through which the customer was referred or acquired
+        tests: []
+
+      - name: birth_year
+        description: Year of birth of the customer
+        tests: []
+
+      - name: gender
+        description: Gender of the customer
+        tests:
+          - not_null
+
+      - name: preferred_device
+        description: The customer's preferred device used on the platform (e.g., mobile, desktop)
+        tests: []
+
+
+models:
+  - name: model_stg_driver_incentive_logs
+    description: >
+      Staging model for `driver incentive logs` data.
+      Contains records of incentive programs applied to drivers along with performance and qualification details.
+    columns:
+      - name: log_id
+        description: Unique identifier for the incentive log record
+        tests:
+          - not_null
+          - unique
+
+      - name: driver_id
+        description: Unique identifier of the driver who received the incentive
+        tests:
+          - not_null
+
+      - name: incentive_program
+        description: Name of the incentive program (e.g., peak hour bonus, weekly target)
+        tests: []
+
+      - name: bonus_amount
+        description: Amount of bonus assigned to the driver
+        tests: []
+
+      - name: applied_date
+        description: Date when the incentive program was applied
+        tests:
+          - not_null
+
+      - name: delivery_target
+        description: Target number of deliveries required to qualify for the bonus
+        tests: []
+
+      - name: actual_deliveries
+        description: Actual number of deliveries completed by the driver
+        tests: []
+
+      - name: bonus_qualified
+        description: Boolean indicating whether the driver qualified for the bonus
+        tests:
+          - accepted_values:
+              values: [true, false]
+
+      - name: region
+        description: Geographic region where the driver operates
+        tests: []
+
+  - name: model_stg_drivers_master
+    description: >
+      Staging model for `drivers master` data.
+      Contains driver registration information, vehicle type, region, status, and performance indicators.
+    columns:
+      - name: driver_id
+        description: Unique identifier for the driver
+        tests:
+          - not_null
+          - unique
+
+      - name: join_date
+        description: Date the driver joined the platform
+        tests:
+          - not_null
+
+      - name: vehicle_type
+        description: Type of vehicle used by the driver (e.g., motorcycle, car)
+        tests: []
+
+      - name: region
+        description: Region where the driver operates
+        tests: []
+
+      - name: active_status
+        description: Indicates if the driver is currently active on the platform
+        tests:
+          - not_null
+
+      - name: driver_rating
+        description: Average rating of the driver based on customer feedback
+        tests: []
+
+      - name: bonus_tier
+        description: Tier classification of the driver for bonus calculation
+        tests: []
+
+  - name: model_stg_order_status_logs
+    description: >
+      Staging model for `order status logs` data.
+      Tracks the historical status updates of each order including time of change and updater identity.
+    columns:
+      - name: log_id
+        description: Unique identifier for the order status log record
+        tests:
+          - not_null
+          - unique
+
+      - name: order_id
+        description: Unique identifier of the related order
+        tests:
+          - not_null
+
+      - name: status
+        description: Current or transitioned status of the order (e.g., created, confirmed, delivered)
+        tests:
+          - not_null
+
+      - name: status_datetime
+        description: Timestamp when the order status was updated
+        tests:
+          - not_null
+
+      - name: updated_by
+        description: System or agent that performed the update
+        tests: []
+
+  - name: model_stg_order_transactions
+    description: >
+      Staging model for `order transactions` data.
+      Includes full transaction details such as timestamps, customer/driver/restaurant references, payment info, and delivery KPIs.
+    columns:
+      - name: order_id
+        description: Unique identifier for the order
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Customer who placed the order
+        tests:
+          - not_null
+
+      - name: restaurant_id
+        description: Restaurant that prepared the order
+        tests:
+          - not_null
+
+      - name: driver_id
+        description: Driver who delivered the order
+        tests:
+          - not_null
+
+      - name: order_datetime
+        description: Time when the order was placed
+        tests:
+          - not_null
+
+      - name: pickup_datetime
+        description: Time when the order was picked up by the driver
+        tests:
+          - not_null
+
+      - name: delivery_datetime
+        description: Time when the order was delivered to the customer
+        tests:
+          - not_null
+
+      - name: order_status
+        description: Current status of the order (e.g., placed, confirmed, delivered, cancelled)
+        tests:
+          - not_null
+
+      - name: delivery_zone
+        description: Zone in which the delivery occurred
+        tests: []
+
+      - name: total_amount
+        description: Total price charged to the customer
+        tests: []
+
+      - name: payment_method
+        description: Payment method used by the customer (e.g., credit card, cash)
+        tests:
+          - not_null
+
+      - name: is_late_delivery
+        description: Boolean indicating if the delivery was late
+        tests:
+          - accepted_values:
+              values: [true, false]
+
+      - name: delivery_distance_km
+        description: Distance in kilometers that the driver traveled for the delivery
+        tests: []
+
+  - name: model_stg_restaurants_master
+    description: >
+      Staging model for `restaurants master` data.
+      Contains restaurant profile details such as name, location, rating, and preparation time.
+    columns:
+      - name: restaurant_id
+        description: Unique identifier for the restaurant
+        tests:
+          - not_null
+          - unique
+
+      - name: name
+        description: Name of the restaurant
+        tests:
+          - not_null
+
+      - name: category
+        description: Food category/type served by the restaurant (e.g., Thai, Japanese)
+        tests: []
+
+      - name: city
+        description: City where the restaurant is located
+        tests: []
+
+      - name: average_rating
+        description: Average customer rating for the restaurant
+        tests: []
+
+      - name: active_status
+        description: Whether the restaurant is currently active on the platform
+        tests:
+          - not_null
+
+      - name: prep_time_min
+        description: Average food preparation time in minutes
+        tests: []
+
+models:
+  - name: model_stg_support_ticket_status_logs
+    description: >
+      Staging model for `support ticket status logs` data.
+      Captures history of support ticket status changes, who handled them, and when.
+    columns:
+      - name: log_id
+        description: Unique identifier for the support ticket status log entry
+        tests:
+          - not_null
+          - unique
+
+      - name: ticket_id
+        description: Identifier of the related support ticket
+        tests:
+          - not_null
+
+      - name: status
+        description: Status value assigned to the ticket at this stage (e.g., open, in_progress, resolved)
+        tests:
+          - not_null
+
+      - name: status_datetime
+        description: Timestamp when the ticket status was updated
+        tests:
+          - not_null
+
+      - name: agent_id
+        description: Identifier of the agent who handled the status update
+        tests: []
+
+  - name: model_stg_support_tickets
+    description: >
+      Staging model for `support tickets` data.
+      Captures customer service tickets including issue classification, timeline, satisfaction score, and compensation details.
+    columns:
+      - name: ticket_id
+        description: Unique identifier for the support ticket
+        tests:
+          - not_null
+          - unique
+
+      - name: order_id
+        description: Identifier of the related order
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: Customer who raised the ticket
+        tests:
+          - not_null
+
+      - name: driver_id
+        description: Driver involved in the issue (nullable)
+        tests: []
+
+      - name: restaurant_id
+        description: Restaurant involved in the issue (nullable)
+        tests: []
+
+      - name: issue_type
+        description: Primary classification of the issue (e.g., delay, wrong item, missing item)
+        tests:
+          - not_null
+
+      - name: issue_sub_type
+        description: More specific description of the issue
+        tests: []
+
+      - name: channel
+        description: Communication channel through which the ticket was submitted (e.g., app, call center)
+        tests:
+          - not_null
+
+      - name: opened_datetime
+        description: Time when the ticket was opened
+        tests:
+          - not_null
+
+      - name: resolved_datetime
+        description: Time when the ticket was resolved (nullable)
+        tests: []
+
+      - name: status
+        description: Current status of the ticket (e.g., open, in_progress, resolved, closed)
+        tests:
+          - not_null
+
+      - name: csat_score
+        description: Customer satisfaction score provided after resolution (nullable)
+        tests: []
+
+      - name: compensation_amount
+        description: Amount refunded or compensated to the customer (if any)
+        tests: []
+
+      - name: resolved_by_agent_id
+        description: Identifier of the customer support agent who resolved the ticket
+        tests: []

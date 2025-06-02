@@ -1,0 +1,499 @@
+version: 2
+
+models:
+  - name: report_campaign_effectiveness
+    description: >
+      Final report for evaluating campaign effectiveness.
+      Combines campaign metadata with performance metrics such as impressions, clicks, conversions, ROAS, and CAC.
+    columns:
+      - name: campaign_id
+        description: Unique identifier of the campaign
+        tests:
+          - not_null
+
+      - name: campaign_name
+        description: Descriptive name of the campaign
+        tests: []
+
+      - name: campaign_type
+        description: Type of campaign (e.g., acquisition, retargeting)
+        tests: []
+
+      - name: objective
+        description: Business objective of the campaign
+        tests: []
+
+      - name: channel
+        description: Channel through which the campaign was run
+        tests: []
+
+      - name: cost_model
+        description: Costing method (e.g., CPC, CPM)
+        tests: []
+
+      - name: targeting_strategy
+        description: Targeting criteria used in the campaign
+        tests: []
+
+      - name: budget
+        description: Budget allocated for the campaign
+        tests: []
+
+      - name: is_active
+        description: Boolean flag indicating whether the campaign is still active
+        tests:
+          - accepted_values:
+              values: [true, false]
+
+      - name: start_date
+        description: Start date of the campaign
+        tests: []
+
+      - name: end_date
+        description: End date of the campaign
+        tests: []
+
+      - name: impressions
+        description: Total number of ad impressions for the campaign
+        tests: []
+
+      - name: clicks
+        description: Total number of ad clicks
+        tests: []
+
+      - name: conversions
+        description: Total number of conversions attributed to the campaign
+        tests: []
+
+      - name: total_ad_cost
+        description: Total cost incurred for running the campaign
+        tests: []
+
+      - name: total_revenue
+        description: Total revenue attributed to the campaign
+        tests: []
+
+      - name: roas
+        description: Return on Ad Spend = total_revenue / total_ad_cost
+        tests: []
+
+      - name: cac
+        description: Customer Acquisition Cost = total_ad_cost / conversions
+        tests: []
+
+  - name: report_complaint_summary_dashboard
+    description: >
+      Final report summarizing customer complaint statistics by issue type and sub-type.
+      Includes ticket volume, escalation rate, average resolution time, compensation, and complaint trends.
+    columns:
+      - name: issue_type
+        description: Primary category of the customer issue (e.g., delivery issue, order problem)
+        tests:
+          - not_null
+
+      - name: issue_sub_type
+        description: More specific classification of the issue
+        tests: []
+
+      - name: total_tickets
+        description: Total number of tickets for this issue type
+        tests: []
+
+      - name: unresolved_or_escalated
+        description: Number of tickets that were either unresolved or escalated
+        tests: []
+
+      - name: avg_resolution_time_min
+        description: Average time taken to resolve the issue in minutes
+        tests: []
+
+      - name: total_compensation_issued
+        description: Total monetary compensation issued for the issue type
+        tests: []
+
+      - name: unresolved_rate
+        description: Calculated ratio of unresolved/escalated tickets over total tickets
+        tests: []
+
+      - name: first_month
+        description: Month when the first ticket in this group was recorded
+        tests: []
+
+      - name: latest_month
+        description: Month when the latest ticket in this group was recorded
+        tests: []
+
+  - name: report_customer_acquisition
+    description: >
+      Final report analyzing the effectiveness of marketing campaigns in acquiring new customers.
+      Includes performance metrics such as conversion volume, spend behavior, and cost efficiency.
+    columns:
+      - name: campaign_id
+        description: Unique identifier for the marketing campaign
+        tests:
+          - not_null
+
+      - name: new_customers
+        description: Number of first-time customers acquired through the campaign
+        tests: []
+
+      - name: avg_orders_per_customer
+        description: Average number of orders made by each new customer
+        tests: []
+
+      - name: avg_total_spent
+        description: Average total spending per new customer
+        tests: []
+
+      - name: avg_order_value
+        description: Average value per order placed by new customers
+        tests: []
+
+      - name: avg_active_days
+        description: Average number of days the customer remained active after first order
+        tests: []
+
+      - name: avg_days_to_first_order
+        description: Average number of days between first interaction and first purchase
+        tests: []
+
+      - name: total_marketing_cost
+        description: Total cost spent on acquiring these new customers
+        tests: []
+
+      - name: cac
+        description: Customer Acquisition Cost (total marketing cost / new customers)
+        tests: []
+
+      - name: campaign_name
+        description: Descriptive name of the campaign
+        tests: []
+
+      - name: channel
+        description: Marketing channel used for the campaign
+        tests: []
+
+      - name: campaign_type
+        description: Type of campaign (e.g., acquisition, awareness)
+        tests: []
+
+      - name: objective
+        description: Business objective of the campaign
+        tests: []
+
+  - name: report_delivery_zone_heatmap
+    description: >
+      Final report that provides a heatmap view of delivery performance and supply-demand balance
+      across delivery regions. Includes operational KPIs like delivery times, completion rates,
+      and driver availability.
+    columns:
+      - name: delivery_region
+        description: Name of the delivery area or zone
+        tests:
+          - not_null
+
+      - name: total_orders
+        description: Total number of orders placed in the region
+        tests: []
+
+      - name: completed_orders
+        description: Number of successfully completed orders
+        tests: []
+
+      - name: cancelled_or_failed_orders
+        description: Number of orders that were cancelled or failed
+        tests: []
+
+      - name: completion_rate
+        description: Ratio of completed_orders to total_orders
+        tests: []
+
+      - name: avg_delivery_time_min
+        description: Average delivery time (in minutes) for completed orders
+        tests: []
+
+      - name: target_delivery_time_min
+        description: Benchmark target for delivery time (in minutes)
+        tests: []
+
+      - name: delivery_time_gap_min
+        description: Difference between actual average and target delivery time
+        tests: []
+
+      - name: delivery_speed_status
+        description: Status label indicating delivery speed performance (e.g., on-time, delayed)
+        tests: []
+
+      - name: total_drivers
+        description: Number of drivers operating in the region
+        tests: []
+
+      - name: supply_demand_ratio
+        description: Ratio of total drivers to total orders
+        tests: []
+
+      - name: supply_demand_status
+        description: Status label indicating whether supply meets demand
+        tests: []
+
+  - name: report_driver_incentive_impact
+    description: >
+      Final report evaluating the impact of driver incentive programs.
+      Tracks delivery volume, customer feedback, bonus spending, and revenue effectiveness.
+    columns:
+      - name: incentive_program
+        description: Name or type of incentive program (e.g., weekly bonus, peak hour)
+        tests:
+          - not_null
+
+      - name: participating_drivers
+        description: Number of drivers participating in the program
+        tests: []
+
+      - name: total_deliveries
+        description: Total number of deliveries completed by participating drivers
+        tests: []
+
+      - name: avg_accept_delay_min
+        description: Average time taken by drivers to accept delivery requests (in minutes)
+        tests: []
+
+      - name: avg_delivery_time_min
+        description: Average delivery time (in minutes) by participating drivers
+        tests: []
+
+      - name: total_bonus_paid
+        description: Total bonus amount paid out through the program
+        tests: []
+
+      - name: total_feedback
+        description: Total number of feedback responses received from customers
+        tests: []
+
+      - name: total_positive_feedback
+        description: Count of positive feedback received
+        tests: []
+
+      - name: total_negative_feedback
+        description: Count of negative feedback received
+        tests: []
+
+      - name: positive_feedback_ratio
+        description: Ratio of positive feedback to total feedback
+        tests: []
+
+      - name: total_revenue_generated
+        description: Total revenue generated by participating drivers
+        tests: []
+
+      - name: revenue_to_bonus_ratio
+        description: Ratio of revenue generated to bonus paid (ROI of incentive)
+        tests: []
+
+  - name: report_driver_performance
+    description: >
+      Final report evaluating the performance of delivery drivers.
+      Includes metrics such as task completion, delivery speed, lateness, and customer feedback.
+    columns:
+      - name: driver_id
+        description: Unique identifier for the delivery driver
+        tests:
+          - not_null
+
+      - name: tasks_assigned
+        description: Total number of delivery tasks assigned to the driver
+        tests: []
+
+      - name: tasks_completed
+        description: Number of tasks successfully completed by the driver
+        tests: []
+
+      - name: avg_accept_delay_min
+        description: Average time (in minutes) the driver takes to accept a task
+        tests: []
+
+      - name: avg_delivery_time_min
+        description: Average time (in minutes) taken for delivery completion
+        tests: []
+
+      - name: late_deliveries
+        description: Number of deliveries completed beyond the expected time
+        tests: []
+
+      - name: total_feedback
+        description: Total number of customer feedback entries for the driver
+        tests: []
+
+      - name: positive_feedback
+        description: Count of positive feedback entries received
+        tests: []
+
+      - name: negative_feedback
+        description: Count of negative feedback entries received
+        tests: []
+
+      - name: vehicle_type
+        description: Type of vehicle used by the driver (e.g., motorcycle, car)
+        tests: []
+
+      - name: driver_region
+        description: Region or service zone in which the driver operates
+        tests: []
+
+  - name: report_driver_related_complaints
+    description: >
+      Final report analyzing customer complaints related to delivery drivers.
+      Includes issue type, resolution performance, CSAT, order counts, and driver rating impact.
+    columns:
+      - name: driver_id
+        description: Unique identifier of the driver involved in complaints
+        tests:
+          - not_null
+
+      - name: total_complaints
+        description: Number of complaints received about the driver
+        tests: []
+
+      - name: common_issue_type
+        description: Most frequently reported issue related to the driver
+        tests: []
+
+      - name: avg_resolution_time_min
+        description: Average time in minutes taken to resolve complaints
+        tests: []
+
+      - name: avg_csat_score
+        description: Average customer satisfaction score post-resolution
+        tests: []
+
+      - name: total_orders
+        description: Total number of orders delivered by the driver
+        tests: []
+
+      - name: complaint_to_order_ratio
+        description: Ratio of complaints to total orders
+        tests: []
+
+      - name: avg_rating_before_complaint
+        description: Driver's average rating before the complaint occurred
+        tests: []
+
+      - name: avg_rating_after_complaint
+        description: Driver's average rating after the complaint was resolved
+        tests: []
+
+      - name: rating_change
+        description: Difference in average rating due to the complaint
+        tests: []
+
+      - name: rating_trend
+        description: Textual label describing rating trajectory (e.g., improved, declined, stable)
+        tests: []
+
+  - name: report_restaurant_quality_complaints
+    description: >
+      Final report analyzing customer complaints related to restaurant quality.
+      Includes metrics on complaint volume, resolution performance, compensation, and repeat purchase behavior.
+    columns:
+      - name: restaurant_id
+        description: Unique identifier of the restaurant
+        tests:
+          - not_null
+
+      - name: restaurant_name
+        description: Name of the restaurant
+        tests: []
+
+      - name: category
+        description: Type of cuisine or food category (e.g., Thai, Pizza)
+        tests: []
+
+      - name: city
+        description: City where the restaurant is located
+        tests: []
+
+      - name: average_rating
+        description: Average customer rating for the restaurant
+        tests: []
+
+      - name: issue_sub_type
+        description: Type of complaint related to food quality or service
+        tests: []
+
+      - name: total_complaints
+        description: Number of complaints received against the restaurant
+        tests: []
+
+      - name: avg_resolution_time_min
+        description: Average time taken to resolve complaints (in minutes)
+        tests: []
+
+      - name: total_compensation_issued
+        description: Total value of compensation provided to customers
+        tests: []
+
+      - name: complaint_to_order_ratio
+        description: Ratio of complaints to total orders
+        tests: []
+
+      - name: affected_customers
+        description: Number of unique customers affected by complaints
+        tests: []
+
+      - name: returning_customers
+        description: Number of customers who returned after filing a complaint
+        tests: []
+
+      - name: repeat_purchase_rate
+        description: Percentage of affected customers who made another purchase
+        tests: []
+
+  - name: report_retargeting_performance
+    description: >
+      Final report evaluating the performance of retargeting campaigns.
+      Measures customer return behavior, revenue, and engagement after being retargeted.
+    columns:
+      - name: campaign_id
+        description: Unique identifier of the retargeting campaign
+        tests:
+          - not_null
+
+      - name: targeted_customers
+        description: Number of previously inactive customers targeted in the campaign
+        tests: []
+
+      - name: returned_customers
+        description: Number of targeted customers who returned and made a purchase
+        tests: []
+
+      - name: return_rate
+        description: Percentage of targeted customers who returned (returned / targeted)
+        tests: []
+
+      - name: total_revenue_after
+        description: Total revenue generated from returning customers after retargeting
+        tests: []
+
+      - name: avg_days_between_orders
+        description: Average number of days between the customer's previous order and the returning order
+        tests: []
+
+      - name: avg_orders_after
+        description: Average number of orders placed after returning
+        tests: []
+
+      - name: campaign_name
+        description: Descriptive name of the campaign
+        tests: []
+
+      - name: channel
+        description: Marketing channel through which retargeting occurred
+        tests: []
+
+      - name: targeting_strategy
+        description: Strategy used to identify and target inactive customers
+        tests: []
+
+      - name: objective
+        description: Objective or business goal of the retargeting campaign
+        tests: []

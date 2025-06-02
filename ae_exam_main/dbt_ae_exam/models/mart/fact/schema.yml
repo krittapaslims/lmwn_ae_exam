@@ -1,0 +1,397 @@
+version: 2
+
+models:
+  - name: model_mart_fact_campaign_summary
+    description: >
+      Fact table summarizing marketing campaign performance.
+      Includes impression, click, conversion, ad cost, revenue, ROAS, and CAC.
+    columns:
+      - name: campaign_id
+        description: Unique identifier of the campaign
+        tests:
+          - not_null
+
+      - name: impressions
+        description: Number of times the ad was displayed to users
+        tests: []
+
+      - name: clicks
+        description: Number of times users clicked the ad
+        tests: []
+
+      - name: conversions
+        description: Number of conversions resulting from the ad
+        tests: []
+
+      - name: total_ad_cost
+        description: Total cost incurred to run the campaign
+        tests: []
+
+      - name: total_revenue
+        description: Revenue generated from users who interacted with the campaign
+        tests: []
+
+      - name: roas
+        description: Return on Ad Spend (total_revenue / total_ad_cost)
+        tests: []
+
+      - name: cac
+        description: Customer Acquisition Cost (total_ad_cost / conversions)
+        tests: []
+
+  - name: model_mart_fact_complaint_summary
+    description: >
+      Fact table summarizing customer complaints by type and sub-type.
+      Includes complaint volume, resolution status, resolution time, and compensation.
+    columns:
+      - name: issue_type
+        description: High-level category of the complaint (e.g., Delivery, Food Quality)
+        tests:
+          - not_null
+
+      - name: issue_sub_type
+        description: Specific type of complaint under the main category
+        tests:
+          - not_null
+
+      - name: total_tickets
+        description: Total number of complaints for each issue type
+        tests: []
+
+      - name: unresolved_or_escalated
+        description: Number of complaints that are either unresolved or escalated
+        tests: []
+
+      - name: avg_resolution_time_min
+        description: Average time to resolve a complaint in minutes
+        tests: []
+
+      - name: total_compensation_issued
+        description: Total amount of compensation provided for complaints in this category
+        tests: []
+
+      - name: first_ticket_datetime
+        description: Earliest date a ticket was opened for this issue type
+        tests: []
+
+      - name: latest_ticket_datetime
+        description: Most recent date a ticket was opened for this issue type
+        tests: []
+
+  - name: model_mart_fact_customer_acquisition_summary
+    description: >
+      Fact table summarizing customer acquisition performance per campaign.
+      Includes number of new customers, their spending and engagement behavior, and cost per acquisition.
+    columns:
+      - name: campaign_id
+        description: Unique identifier for the marketing campaign
+        tests:
+          - not_null
+
+      - name: new_customers
+        description: Count of newly acquired customers attributed to the campaign
+        tests: []
+
+      - name: avg_orders_per_customer
+        description: Average number of orders per acquired customer
+        tests: []
+
+      - name: avg_total_spent
+        description: Average total spend per acquired customer
+        tests: []
+
+      - name: avg_order_value
+        description: Average order value per customer
+        tests: []
+
+      - name: avg_active_days
+        description: Average number of days customers remained active after first purchase
+        tests: []
+
+      - name: avg_days_to_first_order
+        description: Average time (in days) from campaign interaction to first order
+        tests: []
+
+      - name: total_marketing_cost
+        description: Total ad cost spent to acquire customers in the campaign
+        tests: []
+
+      - name: cac
+        description: Customer Acquisition Cost = total_marketing_cost / new_customers
+        tests: []
+
+  - name: model_mart_fact_delivery_zone_summary
+    description: >
+      Fact table summarizing delivery performance by region.
+      Includes metrics such as order volume, success rate, delivery time, and supply-demand balance.
+    columns:
+      - name: region
+        description: Delivery region or zone
+        tests:
+          - not_null
+
+      - name: total_orders
+        description: Total number of orders placed in the region
+        tests: []
+
+      - name: completed_orders
+        description: Number of orders successfully delivered
+        tests: []
+
+      - name: cancelled_or_failed_orders
+        description: Number of orders that were cancelled or failed
+        tests: []
+
+      - name: completion_rate
+        description: Percentage of orders successfully completed
+        tests: []
+
+      - name: avg_delivery_time_min
+        description: Average time taken to complete deliveries in minutes
+        tests: []
+
+      - name: total_drivers
+        description: Number of active delivery drivers in the region
+        tests: []
+
+      - name: supply_demand_ratio
+        description: Ratio between driver availability and delivery demand
+        tests: []
+
+  - name: model_mart_fact_driver_complaint_summary
+    description: >
+      Fact table summarizing driver-related complaints. Includes complaint count,
+      common issue types, resolution metrics, and changes in driver rating.
+    columns:
+      - name: driver_id
+        description: Unique identifier for the driver
+        tests:
+          - not_null
+
+      - name: total_complaints
+        description: Total number of complaints filed against the driver
+        tests: []
+
+      - name: common_issue_type
+        description: Most frequent complaint type associated with the driver
+        tests: []
+
+      - name: avg_resolution_time_min
+        description: Average time (in minutes) to resolve complaints
+        tests: []
+
+      - name: avg_csat_score
+        description: Average customer satisfaction score from complaint resolution
+        tests: []
+
+      - name: total_orders
+        description: Total number of orders handled by the driver
+        tests: []
+
+      - name: complaint_to_order_ratio
+        description: Ratio of complaints to total orders
+        tests: []
+
+      - name: avg_rating_before_complaint
+        description: Average driver rating before receiving complaints
+        tests: []
+
+      - name: avg_rating_after_complaint
+        description: Average driver rating after complaint events
+        tests: []
+
+  - name: model_mart_fact_driver_incentive_summary
+    description: >
+      Fact table summarizing driver incentive programs and their impact on driver performance,
+      customer feedback, bonuses paid, and revenue generated.
+    columns:
+      - name: incentive_program
+        description: Name of the driver incentive program
+        tests:
+          - not_null
+
+      - name: participating_drivers
+        description: Number of drivers who participated in the incentive program
+        tests: []
+
+      - name: total_deliveries
+        description: Total number of deliveries completed by participating drivers
+        tests: []
+
+      - name: avg_accept_delay_min
+        description: Average time (in minutes) drivers took to accept orders
+        tests: []
+
+      - name: avg_delivery_time_min
+        description: Average delivery duration (in minutes) during incentive period
+        tests: []
+
+      - name: total_feedback
+        description: Total feedback submissions from customers for participating drivers
+        tests: []
+
+      - name: total_positive_feedback
+        description: Total number of positive feedback submissions
+        tests: []
+
+      - name: total_negative_feedback
+        description: Total number of negative feedback submissions
+        tests: []
+
+      - name: positive_feedback_ratio
+        description: Ratio of positive feedback to total feedback
+        tests: []
+
+      - name: total_bonus_paid
+        description: Total incentive bonuses paid to drivers
+        tests: []
+
+      - name: total_revenue_generated
+        description: Total revenue generated from deliveries during the incentive program
+        tests: []
+
+      - name: revenue_to_bonus_ratio
+        description: Ratio of revenue generated to bonuses paid
+        tests: []
+
+  - name: model_mart_fact_driver_performance_summary
+    description: >
+      Fact table summarizing driver performance metrics such as task assignment,
+      delivery timeliness, and customer feedback by driver.
+    columns:
+      - name: driver_id
+        description: Unique identifier for the delivery driver
+        tests:
+          - not_null
+
+      - name: tasks_assigned
+        description: Number of delivery tasks assigned to the driver
+        tests: []
+
+      - name: tasks_completed
+        description: Number of delivery tasks successfully completed
+        tests: []
+
+      - name: avg_accept_delay_min
+        description: Average time (in minutes) the driver took to accept orders
+        tests: []
+
+      - name: avg_delivery_time_min
+        description: Average delivery duration (in minutes)
+        tests: []
+
+      - name: late_deliveries
+        description: Number of deliveries marked as late
+        tests: []
+
+      - name: total_feedback
+        description: Total number of customer feedback submissions
+        tests: []
+
+      - name: positive_feedback
+        description: Number of positive feedback submissions
+        tests: []
+
+      - name: negative_feedback
+        description: Number of negative feedback submissions
+        tests: []
+
+      - name: vehicle_type
+        description: Type of vehicle used by the driver (e.g., motorcycle, car)
+        tests: []
+
+      - name: driver_region
+        description: Region in which the driver operates
+        tests: []
+
+  - name: model_mart_fact_restaurant_complaint_summary
+    description: >
+      Fact table summarizing restaurant-related complaints, including issue types,
+      compensation amounts, resolution time, and the impact on customer return behavior.
+    columns:
+      - name: restaurant_id
+        description: Unique identifier for the restaurant
+        tests:
+          - not_null
+
+      - name: restaurant_name
+        description: Name of the restaurant
+        tests: []
+
+      - name: category
+        description: Category/type of the restaurant (e.g., Thai, Japanese, Fast Food)
+        tests: []
+
+      - name: city
+        description: City where the restaurant is located
+        tests: []
+
+      - name: average_rating
+        description: Average customer rating for the restaurant
+        tests: []
+
+      - name: issue_sub_type
+        description: Sub-category of the complaint (e.g., food quality, late delivery)
+        tests: []
+
+      - name: total_complaints
+        description: Total number of complaints for this issue type
+        tests: []
+
+      - name: avg_resolution_time_min
+        description: Average time in minutes taken to resolve the complaint
+        tests: []
+
+      - name: total_compensation_issued
+        description: Total monetary compensation issued for the complaints
+        tests: []
+
+      - name: affected_customers
+        description: Number of unique customers affected by complaints
+        tests: []
+
+      - name: total_orders
+        description: Total number of orders placed with the restaurant
+        tests: []
+
+      - name: complaint_to_order_ratio
+        description: Ratio of complaints to total orders
+        tests: []
+
+      - name: returning_customers
+        description: Number of customers who returned after a complaint was resolved
+        tests: []
+
+  - name: model_mart_fact_retargeting_summary
+    description: >
+      Fact table summarizing retargeting campaign performance, including return rates,
+      post-campaign revenue, and customer behavior after being retargeted.
+    columns:
+      - name: campaign_id
+        description: Unique identifier for the retargeting campaign
+        tests:
+          - not_null
+
+      - name: targeted_customers
+        description: Number of distinct customers targeted by the campaign
+        tests: []
+
+      - name: returned_customers
+        description: Number of targeted customers who made a return purchase
+        tests: []
+
+      - name: return_rate
+        description: Ratio of returned customers to targeted customers
+        tests: []
+
+      - name: total_revenue_after
+        description: Total revenue generated after the retargeting campaign
+        tests: []
+
+      - name: avg_days_between_orders
+        description: Average number of days between the retargeting interaction and next purchase
+        tests: []
+
+      - name: avg_orders_after
+        description: Average number of orders made after retargeting
+        tests: []

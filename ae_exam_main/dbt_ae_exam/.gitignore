@@ -4,7 +4,7 @@ dbt_packages/
 logs/
 
 # Local database file
-ae_exam_db.duckdb
+# ae_exam_db.duckdb
 
 # User config (เฉพาะ local)
 .user.yml

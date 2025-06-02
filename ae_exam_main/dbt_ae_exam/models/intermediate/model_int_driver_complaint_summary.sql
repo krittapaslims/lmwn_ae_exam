@@ -18,7 +18,7 @@ WITH driver_rating_events AS (
     LEFT JOIN {{ ref('model_int_ticket_status_latest') }} l
       ON s.ticket_id = l.ticket_id
     LEFT JOIN {{ ref('model_stg_drivers_master') }} dm
-      ON s.driver_id = dm.driver_id0
+      ON s.driver_id = dm.driver_id
     WHERE s.driver_id IS NOT NULL
 )
 

@@ -48,7 +48,6 @@ SELECT
     rstr.category,
     rstr.city,
     rstr.average_rating,
-    
     c.issue_sub_type,
     c.total_complaints,
     c.avg_resolution_time_min,
@@ -57,7 +56,6 @@ SELECT
     o.total_orders,
     ROUND(1.0 * c.total_complaints / NULLIF(o.total_orders, 0), 3) AS complaint_to_order_ratio,
     COALESCE(r.returning_customers, 0) AS returning_customers
-
 FROM complaints c
 LEFT JOIN orders o ON c.restaurant_id = o.restaurant_id
 LEFT JOIN repeat_behavior r ON c.restaurant_id = r.restaurant_id
